@@ -7,7 +7,7 @@ import { EntityViewed, EntityViewedSocket, ComponentTypeHandles } from "..";
  * @param thisEntity entity to check if has component
  * @param typeHandle TypeHandle of the component to get
  */
-export function EntityComponentHas (thisEntity: IEntity, typeHandle: string): boolean 
+export function EntityComponentHas(thisEntity: IEntity, typeHandle: string): boolean 
 {
   return thisEntity.Components.has(typeHandle);
 }
@@ -20,7 +20,7 @@ export function EntityComponentHas (thisEntity: IEntity, typeHandle: string): bo
  * 
  * @returns The component, or undefined if did not have that component.
  */
-export function EntityComponentGet<T> (thisEntity: IEntity, typeHandle: string): T | undefined
+export function EntityComponentGet<T>(thisEntity: IEntity, typeHandle: string): T | undefined
 {
   let component = thisEntity.Components[typeHandle];
   if (component !== undefined) // got component
@@ -39,7 +39,7 @@ export function EntityComponentGet<T> (thisEntity: IEntity, typeHandle: string):
  * 
  * @throws if already has one with matching typeHandle.
  */
-export function EntityComponentAdd (thisEntity: IEntity, typeHandle: string, component: any): void 
+export function EntityComponentAdd(thisEntity: IEntity, typeHandle: string, component: any): void 
 {
   if (thisEntity.Components.hasOwnProperty(typeHandle))
   {
@@ -57,7 +57,7 @@ export function EntityComponentAdd (thisEntity: IEntity, typeHandle: string, com
  * 
  * @returns The component, or undefined if did not have that component.
  */
-export function EntityComponentGetElseThrow<T> (thisEntity: IEntity, typeHandle: string): T
+export function EntityComponentGetElseThrow<T>(thisEntity: IEntity, typeHandle: string): T
 {
   let component: T | undefined = EntityComponentGet<T>(thisEntity, typeHandle);
 
@@ -78,7 +78,7 @@ export function EntityComponentGetElseThrow<T> (thisEntity: IEntity, typeHandle:
  * 
  * @returns - new IEntityViewed.
  */
-export function NewEntityViewed (viewComponent: IViewComponent, components: IComponents = {}): IEntityViewed
+export function NewEntityViewed(viewComponent: IViewComponent, components: IComponents = {}): IEntityViewed
 {
   let entityViewed = new EntityViewed();
 
@@ -101,7 +101,7 @@ export function NewEntityViewed (viewComponent: IViewComponent, components: ICom
  * 
  * @returns - new IEntityViewedSocket.
  */
-export function NewEntityViewedSocket (viewComponent: IViewComponent, socketComponent: ISocketComponent, components: IComponents = {}): IEntityViewedSocket
+export function NewEntityViewedSocket(viewComponent: IViewComponent, socketComponent: ISocketComponent, components: IComponents = {}): IEntityViewedSocket
 {
   let entityViewedSocket = new EntityViewedSocket();
 
@@ -127,7 +127,7 @@ export function NewEntityViewedSocket (viewComponent: IViewComponent, socketComp
 /**
  * Creates a new ISocketComponent.
  */
-export function NewSocketComponent (socketID: number, properties: any = {}): ISocketComponent
+export function NewSocketComponent(socketID: number, properties: any = {}): ISocketComponent
 {
   return <ISocketComponent>{
     SocketID: socketID,
