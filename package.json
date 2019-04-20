@@ -1,0 +1,24 @@
+{
+  "name": "tachyon-ecs-lib-base",
+  "version": "1.0.0-alpha",
+  "description": "Entity Component System standard.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SINeDUSTRIES/tachyon-ecs.git"
+  },
+  "author": "SINeDUSTRIES, LLC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SINeDUSTRIES/tachyon/issues"
+  },
+  "homepage": "https://github.com/SINeDUSTRIES/tachyon#readme",
+  "scripts": {
+    "build": "tsc --declaration",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/node": "^11.13.6",
+    "tachyon-ecs": "^1.0.0-alpha.7"
+  }
+}
