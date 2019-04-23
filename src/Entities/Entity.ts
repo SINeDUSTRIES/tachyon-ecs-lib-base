@@ -1,4 +1,4 @@
-import { IEntity } from "tachyon-ecs"
+import { IEntity } from "@sinedustries/tachyon-ecs"
 
 /**
  * Implements IEntity.

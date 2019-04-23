@@ -1,4 +1,4 @@
-import { IEntity, IComponents, IViewComponent, ISocketComponent, IEntityViewed, IEntityViewedSocket } from "tachyon-ecs";
+import * as tachyon from "@sinedustries/tachyon-ecs";
 import { EntityViewed, EntityViewedSocket, ComponentTypeHandles } from "..";
 
 /**
@@ -7,7 +7,7 @@ import { EntityViewed, EntityViewedSocket, ComponentTypeHandles } from "..";
  * @param thisEntity entity to check if has component
  * @param typeHandle TypeHandle of the component to get
  */
-export function EntityComponentHas(thisEntity: IEntity, typeHandle: string): boolean 
+export function EntityComponentHas(thisEntity: tachyon.IEntity, typeHandle: string): boolean 
 {
   return thisEntity.Components.has(typeHandle);
 }
@@ -20,7 +20,7 @@ export function EntityComponentHas(thisEntity: IEntity, typeHandle: string): boo
  * 
  * @returns The component, or undefined if did not have that component.
  */
-export function EntityComponentGet<T>(thisEntity: IEntity, typeHandle: string): T | undefined
+export function EntityComponentGet<T>(thisEntity: tachyon.IEntity, typeHandle: string): T | undefined
 {
   let component = thisEntity.Components[typeHandle];
   if (component !== undefined) // got component
@@ -39,7 +39,7 @@ export function EntityComponentGet<T>(thisEntity: IEntity, typeHandle: string): 
  * 
  * @throws if already has one with matching typeHandle.
  */
-export function EntityComponentAdd(thisEntity: IEntity, typeHandle: string, component: any): void 
+export function EntityComponentAdd(thisEntity: tachyon.IEntity, typeHandle: string, component: any): void 
 {
   if (thisEntity.Components.hasOwnProperty(typeHandle))
   {
@@ -57,7 +57,7 @@ export function EntityComponentAdd(thisEntity: IEntity, typeHandle: string, comp
  * 
  * @returns The component, or undefined if did not have that component.
  */
-export function EntityComponentGetElseThrow<T>(thisEntity: IEntity, typeHandle: string): T
+export function EntityComponentGetElseThrow<T>(thisEntity: tachyon.IEntity, typeHandle: string): T
 {
   let component: T | undefined = EntityComponentGet<T>(thisEntity, typeHandle);
 
@@ -78,7 +78,7 @@ export function EntityComponentGetElseThrow<T>(thisEntity: IEntity, typeHandle: 
  * 
  * @returns - new IEntityViewed.
  */
-export function NewEntityViewed(viewComponent: IViewComponent, components: IComponents = {}): IEntityViewed
+export function NewEntityViewed(viewComponent: tachyon.IViewComponent, components: tachyon.IComponents = {}): tachyon.IEntityViewed
 {
   let entityViewed = new EntityViewed();
 
@@ -101,7 +101,7 @@ export function NewEntityViewed(viewComponent: IViewComponent, components: IComp
  * 
  * @returns - new IEntityViewedSocket.
  */
-export function NewEntityViewedSocket(viewComponent: IViewComponent, socketComponent: ISocketComponent, components: IComponents = {}): IEntityViewedSocket
+export function NewEntityViewedSocket(viewComponent: tachyon.IViewComponent, socketComponent: tachyon.ISocketComponent, components: tachyon.IComponents = {}): tachyon.IEntityViewedSocket
 {
   let entityViewedSocket = new EntityViewedSocket();
 
@@ -127,9 +127,9 @@ export function NewEntityViewedSocket(viewComponent: IViewComponent, socketCompo
 /**
  * Creates a new ISocketComponent.
  */
-export function NewSocketComponent(socketID: number, properties: any = {}): ISocketComponent
+export function NewSocketComponent(socketID: number, properties: any = {}): tachyon.ISocketComponent
 {
-  return <ISocketComponent>{
+  return <tachyon.ISocketComponent>{
     SocketID: socketID,
     Properties: properties
   }

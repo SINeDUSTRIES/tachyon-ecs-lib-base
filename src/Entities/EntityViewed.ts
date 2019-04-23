@@ -1,4 +1,4 @@
-import { IViewComponent, IEntityViewed } from "tachyon-ecs";
+import { IViewComponent, IEntityViewed } from "@sinedustries/tachyon-ecs";
 import { Entity, ComponentTypeHandles } from "..";
 
 export class EntityViewed extends Entity
@@ -7,7 +7,7 @@ export class EntityViewed extends Entity
   /**
    * Get the IViewComponent from the components.
    */
-  get ViewComponent (): IViewComponent
+  get ViewComponent(): IViewComponent
   {
     return this.Components[ComponentTypeHandles.ViewComponent];
   }

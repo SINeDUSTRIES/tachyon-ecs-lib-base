@@ -1,4 +1,4 @@
-import { ISocketComponent, IEntityViewedSocket } from "tachyon-ecs";
+import { ISocketComponent, IEntityViewedSocket } from "@sinedustries/tachyon-ecs";
 import { EntityViewed, ComponentTypeHandles } from "..";
 
 /**
@@ -10,7 +10,7 @@ export class EntityViewedSocket extends EntityViewed
   /**
    * Get the IViewComponent from the components.
    */
-  get SocketComponent (): ISocketComponent
+  get SocketComponent(): ISocketComponent
   {
     return this.Components[ComponentTypeHandles.SocketComponent];
   }
