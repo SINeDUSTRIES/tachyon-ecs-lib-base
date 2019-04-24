@@ -146,7 +146,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   /**
   * Handle a socket disconnecting from this one.
   */
-  protected abstract onSocket_Close(socketID: number, reason: string): void;
+  protected abstract onSocket_Close(socket: TSocket, socketID: number, reason: string): void;
 
   //#endregions
 
