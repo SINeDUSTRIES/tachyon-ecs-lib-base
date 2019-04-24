@@ -19,36 +19,34 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   // @returns - message sent to sockets
 
   /**
-   * Invoked before any other onMessage_.
+   * Invoked before specific onMessage_.
    * 
    * Implementation:
    * - Return a ProblemCode for any message.
    */
-  protected abstract onMessage(socketID: number, message: tachyon.IMessage): tachyon.ProblemCode;
+  protected abstract onMessage(socket: TSocket, socketID: number, message: tachyon.IMessage): tachyon.ProblemCode;
 
-  protected abstract onMessage_ComponentDelta(socketID: number, message: tachyon.IMessage_ComponentDelta): tachyon.ProblemCode;
+  protected abstract onMessage_ComponentDelta(socket: TSocket, socketID: number, message: tachyon.IMessage_ComponentDelta): tachyon.ProblemCode;
 
-  protected abstract onMessage_EntityInstantiateFullServer(socketID: number, message: tachyon.IMessage_EntityInstantiateFullServer): tachyon.ProblemCode;
-  protected abstract onMessage_EntityInstantiatePrefabServer(socketID: number, message: tachyon.IMessage_EntityInstantiatePrefabServer): tachyon.ProblemCode;
+  protected abstract onMessage_EntityInstantiateFullServer(socket: TSocket, socketID: number, message: tachyon.IMessage_EntityInstantiateFullServer): tachyon.ProblemCode;
+  protected abstract onMessage_EntityInstantiatePrefabServer(socket: TSocket, socketID: number, message: tachyon.IMessage_EntityInstantiatePrefabServer): tachyon.ProblemCode;
 
-  protected abstract onMessage_EntityInstantiateFullClient(socketID: number, message: tachyon.IMessage_EntityInstantiateFullClient): tachyon.ProblemCode;
-  protected abstract onMessage_EntityInstantiatePrefabClient(socketID: number, message: tachyon.IMessage_EntityInstantiatePrefabClient): tachyon.ProblemCode;
+  protected abstract onMessage_EntityInstantiateFullClient(socket: TSocket, socketID: number, message: tachyon.IMessage_EntityInstantiateFullClient): tachyon.ProblemCode;
+  protected abstract onMessage_EntityInstantiatePrefabClient(socket: TSocket, socketID: number, message: tachyon.IMessage_EntityInstantiatePrefabClient): tachyon.ProblemCode;
 
-  protected abstract onMessage_SocketHandshakeClient(socketID: number, message: tachyon.IMessage_SocketHandshakeClient): tachyon.ProblemCode;
-  protected abstract onMessage_SocketHandshakeServer(socketID: number, message: tachyon.IMessage_SocketHandshakeServer): tachyon.ProblemCode;
-  protected abstract onMessage_SocketReadyClient(socketID: number, message: tachyon.IMessage_SocketReadyClient): tachyon.ProblemCode;
+  protected abstract onMessage_SocketHandshakeClient(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketHandshakeClient): tachyon.ProblemCode;
+  protected abstract onMessage_SocketHandshakeServer(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketHandshakeServer): tachyon.ProblemCode;
+  protected abstract onMessage_SocketReadyClient(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketReadyClient): tachyon.ProblemCode;
 
-  protected abstract onMessage_Problem(socketID: number, message: tachyon.IMessage_Problem): tachyon.ProblemCode;
+  protected abstract onMessage_Problem(socket: TSocket, socketID: number, message: tachyon.IMessage_Problem): tachyon.ProblemCode;
 
   /**
    * Handle tachyon.IMessage.Code specific to your app.
-   * 
-   * Messages are ensured NOT to have a tachyon.ProblemCode.SocketIDMismatch.
-   * 
+  * 
    * Implementation:
    * - Parse tachyon.IMessage.Code, using app specific codes.
    */
-  protected abstract onMessage_default(socketID: number, message: tachyon.IMessage): tachyon.ProblemCode;
+  protected abstract onMessage_default(socket: TSocket, socketID: number, message: tachyon.IMessage): tachyon.ProblemCode;
 
   //#endregion
 
@@ -64,9 +62,9 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
    * 
    * @returns the message that was interpreted.
    */
-  private _onSocket_Message(socketID: number, message: string): tachyon.ProblemCode
+  private _onSocket_Message(socket: TSocket, socketID: number, message: string): tachyon.ProblemCode
   {
-    console.log(`SocketID: ${socketID}. Message: ${message}`);
+    console.log(`Message: ${message}`);
 
     let messageObject;
     try
@@ -82,7 +80,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
 
     let messageTachyon = <tachyon.IMessage>messageObject; // assert that the message is a tachyon message
 
-    let problemCode = this.onMessage(socketID, messageTachyon);
+    let problemCode = this.onMessage(socket, socketID, messageTachyon);
 
     if (problemCode !== tachyon.ProblemCode.NONE)
     {
@@ -91,42 +89,42 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
         // components
 
         case MessageCode.ComponentDelta:
-          problemCode = this.onMessage_ComponentDelta(socketID, messageTachyon);
+          problemCode = this.onMessage_ComponentDelta(socket, socketID, messageTachyon);
 
         // entities
 
         case MessageCode.EntityInstantiateFullClient:
-          problemCode = this.onMessage_EntityInstantiateFullClient(socketID, messageTachyon);
+          problemCode = this.onMessage_EntityInstantiateFullClient(socket, socketID, messageTachyon);
 
         case MessageCode.EntityInstantiateFullServer:
-          problemCode = this.onMessage_EntityInstantiateFullServer(socketID, messageTachyon);
+          problemCode = this.onMessage_EntityInstantiateFullServer(socket, socketID, messageTachyon);
 
         case MessageCode.EntityInstantiatePrefabClient:
-          problemCode = this.onMessage_EntityInstantiatePrefabClient(socketID, messageTachyon);
+          problemCode = this.onMessage_EntityInstantiatePrefabClient(socket, socketID, messageTachyon);
 
         case MessageCode.EntityInstantiatePrefabServer:
-          problemCode = this.onMessage_EntityInstantiatePrefabServer(socketID, messageTachyon);
+          problemCode = this.onMessage_EntityInstantiatePrefabServer(socket, socketID, messageTachyon);
 
         // sockets
 
         case MessageCode.SocketHandshakeClient:
-          problemCode = this.onMessage_SocketHandshakeClient(socketID, messageTachyon);
+          problemCode = this.onMessage_SocketHandshakeClient(socket, socketID, messageTachyon);
 
         case MessageCode.SocketHandshakeServer:
-          problemCode = this.onMessage_SocketHandshakeServer(socketID, messageTachyon);
+          problemCode = this.onMessage_SocketHandshakeServer(socket, socketID, messageTachyon);
 
         case MessageCode.SocketReadyClient:
-          problemCode = this.onMessage_SocketReadyClient(socketID, messageTachyon);
+          problemCode = this.onMessage_SocketReadyClient(socket, socketID, messageTachyon);
 
         // problem
 
         case MessageCode.Problem:
-          problemCode = this.onMessage_Problem(socketID, messageTachyon);
+          problemCode = this.onMessage_Problem(socket, socketID, messageTachyon);
 
         // default
 
         default: // did not match tachyon codes, use implementation codes instead
-          problemCode = this.onMessage_default(socketID, messageTachyon);
+          problemCode = this.onMessage_default(socket, socketID, messageTachyon);
       }
     }
 
@@ -138,11 +136,11 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   /**
    * Invokes onMessage methods.
    * 
-   * Strongly reccomended NOT to extend this. Instead, use onMessage methods.
+   * Strongly reccomended NOT to extend this.
    */
-  protected onSocket_Message(socketID: number, message: string): tachyon.ProblemCode
+  protected onSocket_Message(socket: TSocket, socketID: number, message: string): tachyon.ProblemCode
   {
-    return this._onSocket_Message(socketID, message);
+    return this._onSocket_Message(socket, socketID, message);
   }
 
   /**
@@ -155,7 +153,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   //#region methods/messages
 
   /**
-   * Send a $message to a Socket with SocketID === $socketID.
+   * Send a $message to a Socket.
    * 
    * @param socketID - SocketID of the Socket to send $message to.
    * @param message - tachyon.IMessage to send to the Socket
@@ -163,7 +161,6 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   protected abstract message_send(socket: TSocket, message: tachyon.IMessage): void;
 
   //#endregion
-
 
   //#region methods/entities
 
