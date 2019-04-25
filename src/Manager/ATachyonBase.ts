@@ -142,7 +142,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
    * 
    * Strongly reccomended NOT to extend this.
    */
-  protected onSocket_Message(socket: TSocket, socketID: number, message: string): tachyon.ProblemCode
+  public OnSocket_Message(socket: TSocket, socketID: number, message: string): tachyon.ProblemCode
   {
     return this._onSocket_Message(socket, socketID, message);
   }
@@ -150,7 +150,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   /**
   * Handle a socket disconnecting from this one.
   */
-  protected abstract onSocket_Close(socket: TSocket, socketID: number, reason: string): void;
+  public abstract OnSocket_Close(socket: TSocket, socketID: number, reason: string): void;
 
   //#endregions
 
@@ -162,20 +162,22 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
    * @param socketID - SocketID of the Socket to send $message to.
    * @param message - tachyon.IMessage to send to the Socket
    */
-  protected abstract message_send(socket: TSocket, message: tachyon.IMessage): void;
+  public abstract Message_Send(socket: TSocket, message: tachyon.IMessage): void;
 
   //#endregion
 
   //#region methods/entities
 
   /**
-   * Adds to collection.
+   * Begin watching an entity. Adds to collection.
    * 
    * Extend to add functionality.
    * 
+   * Does NOT instantiate on clients.
+   * 
    * @param entityViewed 
    */
-  protected entity_Watch(entityViewed: tachyon.IEntityViewed)
+  public Entity_Watch(entityViewed: tachyon.IEntityViewed)
   {
     this.entitiesViewed.set(entityViewed.ViewComponent.EntityViewID, entityViewed);
   }
@@ -193,7 +195,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
    * 
    * @throws if no SocketEntity with that SocketID.
    */
-  protected socketEntity_Get(socketID: number): tachyon.IEntityViewedSocket
+  public SocketEntity_Get(socketID: number): tachyon.IEntityViewedSocket
   {
     let socket = this.socketEntities.get(socketID);
 
@@ -212,9 +214,11 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
  * 
  * Extend to add functionality.
  * 
+ * Does NOT watch.
+ * 
  * @throws if already SocketEntity with that SocketID.
  */
-  protected socketEntity_Add(socketID: number, socketEntity: tachyon.IEntityViewedSocket)
+  public SocketEntity_Add(socketID: number, socketEntity: tachyon.IEntityViewedSocket)
   {
     if (!this.socketEntities.has(socketID))
     {
@@ -233,7 +237,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
    * 
    * @throws if no SocketEntity with that SocketID.
    */
-  protected socketEntity_Remove(socketID: number)
+  public SocketEntity_Remove(socketID: number)
   {
     if (!this.socketEntities.delete(socketID))
     {
@@ -260,6 +264,8 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
    * value: SocketEntity where ISocketComponent.SocketID === $key.
    */
   protected socketEntities: Map<number, tachyon.IEntityViewedSocket> = new Map<number, tachyon.IEntityViewedSocket>();
+
+  // TODO: implement better ECS, Components as consecutive memory
 
   //#endregion
 }
