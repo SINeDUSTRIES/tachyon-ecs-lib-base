@@ -34,6 +34,7 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   protected abstract onMessage_EntityInstantiateFullClient(socket: TSocket, socketID: number, message: tachyon.IMessage_EntityInstantiateFullClient): tachyon.ProblemCode;
   protected abstract onMessage_EntityInstantiatePrefabClient(socket: TSocket, socketID: number, message: tachyon.IMessage_EntityInstantiatePrefabClient): tachyon.ProblemCode;
 
+  protected abstract onMessage_SocketInitializeClient(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketInitializeClient): tachyon.ProblemCode;
   protected abstract onMessage_SocketHandshakeClient(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketHandshakeClient): tachyon.ProblemCode;
   protected abstract onMessage_SocketHandshakeServer(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketHandshakeServer): tachyon.ProblemCode;
   protected abstract onMessage_SocketReadyClient(socket: TSocket, socketID: number, message: tachyon.IMessage_SocketReadyClient): tachyon.ProblemCode;
@@ -106,6 +107,9 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
           problemCode = this.onMessage_EntityInstantiatePrefabServer(socket, socketID, messageTachyon);
 
         // sockets
+
+        case MessageCode.SocketInitializeClient:
+          problemCode = this.onMessage_SocketInitializeClient(socket, socketID, messageTachyon);
 
         case MessageCode.SocketHandshakeClient:
           problemCode = this.onMessage_SocketHandshakeClient(socket, socketID, messageTachyon);
@@ -204,6 +208,25 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   }
 
   /**
+ * Add SocketEntity for a given SocketID.
+ * 
+ * Extend to add functionality.
+ * 
+ * @throws if already SocketEntity with that SocketID.
+ */
+  protected socketEntity_Add(socketID: number, socketEntity: tachyon.IEntityViewedSocket)
+  {
+    if (!this.socketEntities.has(socketID))
+    {
+      this.socketEntities.set(socketID, socketEntity);
+    }
+    else
+    {
+      throw new Error(`Socket Entity with SocketID '${socketID}' already exists.`)
+    }
+  }
+
+  /**
    * Delete SocketEntity for a given SocketID.
    * 
    * Extend to add functionality.
@@ -223,6 +246,8 @@ export abstract class ATachyonBase<TSocket> //implements ITachyonHandler
   //#region variables/entities
 
   /**
+   * All the viewed entities.
+   * 
    * key: EntityViewID.
    * value: enitty whose IViewComponent.EntityViewID equals key
    */

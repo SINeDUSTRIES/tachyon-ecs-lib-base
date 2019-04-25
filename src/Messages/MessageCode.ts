@@ -13,6 +13,7 @@ export enum MessageCode
   EntityInstantiatePrefabClient = "EntityInstantiatePrefabClient",
   EntityInstantiatePrefabServer = "EntityInstantiatePrefabServer",
 
+  SocketInitializeClient = "SocketInitializeClient",
   SocketHandshakeClient = "SocketHandshakeClient",
   SocketHandshakeServer = "SocketHandshakeServer",
   SocketReadyClient = "SocketReadyClient",
